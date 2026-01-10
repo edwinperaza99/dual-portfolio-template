@@ -2,6 +2,8 @@ import { revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 import { parseBody } from "next-sanity/webhook";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: NextRequest) {
 	try {
 		const { body, isValidSignature } = await parseBody<{
@@ -19,7 +21,9 @@ export async function POST(req: NextRequest) {
 
 		await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		await revalidateTag("global-sanity");
+		// In Next.js 16, revalidateTag requires a cache profile parameter
+		// "max" profile ensures immediate invalidation (expiry: 0 behavior)
+		await revalidateTag("global-sanity", "expiry:0");
 
 		console.log("Revalidated everything via global-sanity tag");
 

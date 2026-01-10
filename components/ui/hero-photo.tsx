@@ -24,7 +24,7 @@ export default function HeroPhoto({ image, variant = "primary" }: Props) {
 	const getWaveTransition = (delay: number) => ({
 		duration: isHovered ? 1.4 : 3,
 		delay,
-		ease: "easeOut",
+		ease: "easeOut" as const,
 		repeat: Infinity,
 		repeatType: "loop" as const,
 	});
